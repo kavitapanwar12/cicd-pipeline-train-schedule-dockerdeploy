@@ -21,7 +21,7 @@ pipeline {
                 }
             }
         }
-        stage('Push Docker Image in Docker hub'){
+        stage('Push Docker Image in Docker hub1'){
             when{
                 branch 'master'
             }
