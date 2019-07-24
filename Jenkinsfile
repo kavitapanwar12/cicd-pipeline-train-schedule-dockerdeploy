@@ -14,14 +14,14 @@ pipeline {
             }
             steps{
                 script{
-                    app=docker.build('pnwrkavita/train-schedule')
+                    app=docker.build('pnwrkavita/train-schedule1')
                     app.inside{
-                        sh 'echo $(curl localhost:8080)'
+                        sh 'echo $(curl localhost:5000)'
                     }
                 }
             }
         }
-        stage('Push Docker Image in Docker hub1'){
+        stage('Push Docker Image in Docker hub'){
             when{
                 branch 'master'
             }
@@ -43,14 +43,14 @@ pipeline {
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull pnwrkavita/train-schedule\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull pnwrkavita/train-schedule1\""
                         try {
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule1\""
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule1\""
                         } catch (err) {
                             echo: 'caught error: $err'
                         }
-                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d pnwrkavita/train-schedule\""
+                        sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule1 -p 5000:5000 -d pnwrkavita/train-schedule1\""
                     }
                 }
             }
