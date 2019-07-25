@@ -1,6 +1,7 @@
-FROM python:latest
-COPY . /app
+FROM python:2.7 alphine
+RUN mkdir /app
 WORKDIR /app
+copy requirement.txt requirement.txt
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+COPY . .
+CMD python app.py
