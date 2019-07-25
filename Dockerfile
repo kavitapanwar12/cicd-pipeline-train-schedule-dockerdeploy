@@ -1,4 +1,4 @@
-FROM python:2.7 alphine
+FROM python:2.7-alphine
 RUN mkdir /app
 WORKDIR /app
 copy requirement.txt requirement.txt
